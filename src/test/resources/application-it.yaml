@@ -2,7 +2,7 @@ micronaut:
   application:
     name: did-server-helper
   server:
-    port: 8080
+    port: -1
     context-path: /
 jwks:
   key-id: did-server-key-01
