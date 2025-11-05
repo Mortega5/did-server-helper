@@ -1,0 +1,32 @@
+name: "Java CI: Code Quality, Formatting, and Tests"
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  # Allows you to manually trigger the workflow from the GitHub UI
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup JDK 21 and Maven Cache
+        # Using the standard setup-java action
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven' # Speeds up subsequent builds by caching dependencies
+
+      - name: 🚨 Run Spotless Format Check (verify code quality)
+        id: spotless-check
+        run: mvn spotless:check -B
+
+      - name: 🧪 Run Full Test Suite (Unit & Integration Tests)
+        run: mvn -B verify
